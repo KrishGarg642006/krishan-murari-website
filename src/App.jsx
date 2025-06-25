@@ -32,7 +32,6 @@ function App() {
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="navbar-left">
           <img src={logo} alt="Krishan Murari Logo" className="navbar-logo" />
-          <span className="brand">Krishan Murari</span>
         </div>
         <div className="nav-links">
           <button
