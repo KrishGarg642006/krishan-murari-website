@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
 import HomeSection from './components/HomeSection';
 import AboutSection from './components/AboutSection';
 import ProductsSection from './components/ProductsSection';
 import ContactSection from './components/ContactSection';
-import logo from './assets/krishan-murari-logo.png';
 import './App.css';
+
+const sections = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'products', label: 'Products' },
+  { id: 'contact', label: 'Contact' },
+];
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -22,45 +26,17 @@ function App() {
   const handleNavClick = (section) => {
     setActiveSection(section);
     const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <div className="main-container">
-      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <div className="navbar-left">
-          <img src={logo} alt="Krishan Murari Logo" className="navbar-logo" />
-        </div>
-        <div className="nav-links">
-          <button
-            className={activeSection === 'home' ? 'active' : ''}
-            onClick={() => handleNavClick('home')}
-          >
-            Home
-          </button>
-          <button
-            className={activeSection === 'about' ? 'active' : ''}
-            onClick={() => handleNavClick('about')}
-          >
-            About
-          </button>
-          <button
-            className={activeSection === 'products' ? 'active' : ''}
-            onClick={() => handleNavClick('products')}
-          >
-            Products
-          </button>
-          <button
-            className={activeSection === 'contact' ? 'active' : ''}
-            onClick={() => handleNavClick('contact')}
-          >
-            Contact
-          </button>
-        </div>
-      </nav>
-
+      <Navbar
+        sections={sections}
+        activeSection={activeSection}
+        onNavClick={handleNavClick}
+        isScrolled={isScrolled}
+      />
       <div className="content">
         <section id="home">
           <HomeSection />
@@ -75,7 +51,6 @@ function App() {
           <ContactSection />
         </section>
       </div>
-
       <footer className="footer">
         <p>© 2002 Krishan Murari. All rights reserved.</p>
       </footer>

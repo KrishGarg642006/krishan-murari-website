@@ -1,81 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+const reviews = [
+  {
+    id: 1,
+    rating: 5,
+    comment: "Since switching to Krishan Murari, our milk production has consistently improved!",
+    author: "Rajesh Kumar",
+    role: "Dairy Farmer",
+    date: "March 15, 2024"
+  },
+  {
+    id: 2,
+    rating: 5,
+    comment: "Our cows are healthier and more active, we've seen a real difference.",
+    author: "Priya Sharma",
+    role: "Farm Owner",
+    date: "March 10, 2024"
+  },
+  {
+    id: 3,
+    rating: 5,
+    comment: "Finally, a feed that delivers on its promise. Our farm is more profitable now.",
+    author: "Amit Patel",
+    role: "Livestock Manager",
+    date: "March 5, 2024"
+  }
+];
+
 const HomeSection = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [showAllReviews, setShowAllReviews] = useState(false);
-  const fullText = "Premium Cattle Feed Solutions";
 
-  useEffect(() => {
-    if (inView) {
-      let currentIndex = 0;
-      const interval = setInterval(() => {
-        if (currentIndex <= fullText.length) {
-          currentIndex++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 100); // Adjust speed here (lower number = faster)
-
-      return () => clearInterval(interval);
-    }
-  }, [inView]);
-
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, index) => (
-      <span key={index} className={`star ${index < rating ? 'filled' : 'empty'}`}>
-        ★
-      </span>
-    ));
-  };
-
-  const reviews = [
-    {
-      id: 1,
-      rating: 5,
-      comment: "Since switching to Krishan Murari, our milk production has consistently improved!",
-      author: "Rajesh Kumar",
-      role: "Dairy Farmer",
-      date: "March 15, 2024"
-    },
-    {
-      id: 2,
-      rating: 5,
-      comment: "Our cows are healthier and more active, we've seen a real difference.",
-      author: "Priya Sharma",
-      role: "Farm Owner",
-      date: "March 10, 2024"
-    },
-    {
-      id: 3,
-      rating: 5,
-      comment: "Finally, a feed that delivers on its promise. Our farm is more profitable now.",
-      author: "Amit Patel",
-      role: "Livestock Manager",
-      date: "March 5, 2024"
-    }
-  ];
+  const renderStars = (rating) => (
+    [...Array(5)].map((_, index) => (
+      <span key={index} className={`star ${index < rating ? 'filled' : 'empty'}`}>★</span>
+    ))
+  );
 
   const handleExploreProducts = () => {
     const productsSection = document.getElementById('products');
-    if (productsSection) {
-      productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (productsSection) productsSection.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleContactUs = () => {
     const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleViewReviews = () => {
-    setShowAllReviews(!showAllReviews);
+    if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -87,16 +57,12 @@ const HomeSection = () => {
             <p className="hero-tagline animate-text animate-text-delay-1">
               Nourishing your livestock with the finest quality feed for optimal health and productivity
             </p>
-            <button 
-              className="cta-button animate-text animate-text-delay-2"
-              onClick={handleExploreProducts}
-            >
+            <button className="cta-button animate-text animate-text-delay-2" onClick={handleExploreProducts}>
               Explore Our Products
             </button>
           </div>
         </div>
       </section>
-
       <section className={`pain-points-section ${inView ? 'visible' : ''}`}>
         <h2 className="section-title">Why Choose Us</h2>
         <div className="pain-points-grid">
@@ -114,7 +80,6 @@ const HomeSection = () => {
           </div>
         </div>
       </section>
-
       <section className={`benefits-section ${inView ? 'visible' : ''}`}>
         <h2 className="section-title">Our Benefits</h2>
         <div className="benefits-grid">
@@ -132,15 +97,12 @@ const HomeSection = () => {
           </div>
         </div>
       </section>
-
       <section className={`testimonial-row ${inView ? 'visible' : ''}`}>
         <h2 className="section-title">What Our Customers Say</h2>
         <div className="reviews-grid">
           {reviews.slice(0, showAllReviews ? reviews.length : 1).map((review) => (
             <div key={review.id} className="review-card scroll-animate">
-              <div className="review-stars">
-                {renderStars(review.rating)}
-              </div>
+              <div className="review-stars">{renderStars(review.rating)}</div>
               <p className="review-comment">{review.comment}</p>
               <div className="review-author">
                 <strong>{review.author}</strong>
@@ -150,14 +112,10 @@ const HomeSection = () => {
             </div>
           ))}
         </div>
-        <button 
-          className="see-all-btn"
-          onClick={handleViewReviews}
-        >
+        <button className="see-all-btn" onClick={() => setShowAllReviews(!showAllReviews)}>
           {showAllReviews ? 'Show Less' : 'View All Reviews'}
         </button>
       </section>
-
       <section className={`faq-section ${inView ? 'visible' : ''}`}>
         <h2 className="section-title">Frequently Asked Questions</h2>
         <div className="faq-grid">
@@ -175,14 +133,10 @@ const HomeSection = () => {
           </div>
         </div>
       </section>
-
       <section className={`cta-section ${inView ? 'visible' : ''}`}>
         <h2 className="section-title">Ready to Improve Your Cattle's Health?</h2>
         <p>Join hundreds of satisfied farmers who trust our premium feed solutions.</p>
-        <button 
-          className="cta-button"
-          onClick={handleContactUs}
-        >
+        <button className="cta-button" onClick={handleContactUs}>
           Contact Us Today
         </button>
       </section>
